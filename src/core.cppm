@@ -8,6 +8,7 @@ export import :SharedContext;
 export import :Application;
 export import :StateManager;
 export import :State;
+export import :GUI;
 export import :MenuState;
 export import :GameState;
 export import :PauseState;

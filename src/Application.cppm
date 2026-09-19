@@ -38,7 +38,10 @@ export namespace core {
         }
 
     private:
-        void handleEvents(const sf::Event &l_event) { m_window.handleEvents(l_event); }
+        void handleEvents(const sf::Event &l_event) {
+            m_window.handleEvents(l_event);
+            m_stateManager.handleEvent(l_event);
+        }
 
         void update(const float l_dt) {
             m_stateManager.update(l_dt);

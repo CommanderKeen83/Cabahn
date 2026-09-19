@@ -2,6 +2,7 @@ module;
 
 #include <SFML/Graphics/Texture.hpp>
 #include <SFML/Graphics/Image.hpp>
+#include <SFML/Graphics/Font.hpp>
 #include <SFML/Audio/SoundBuffer.hpp>
 
 export module core:ResourceManager;
@@ -118,6 +119,7 @@ export namespace core {
     using TextureCache = ResourceCache<sf::Texture>;
     using SoundCache = ResourceCache<sf::SoundBuffer>;
     using ImageCache = ResourceCache<sf::Image>;
+    using FontCache = ResourceCache<sf::Font>;
 
     class ResourceManager {
     public:
@@ -182,6 +184,10 @@ export namespace core {
                 return load<sf::SoundBuffer>(l_id, l_path);
             }
 
+            if (ext == ".ttf" || ext == ".otf" || ext == ".woff" || ext == ".woff2") {
+                return load<sf::Font>(l_id, l_path);
+            }
+
             return false;
         }
 
@@ -190,6 +196,7 @@ export namespace core {
             if (m_textures.has(l_id)) return m_textures.release(l_id);
             if (m_sounds.has(l_id)) return m_sounds.release(l_id);
             if (m_images.has(l_id)) return m_images.release(l_id);
+            if (m_fonts.has(l_id)) return m_fonts.release(l_id);
             return false;
         }
 
@@ -249,10 +256,25 @@ export namespace core {
             return release<sf::Image>(l_id);
         }
 
+        // Font-specific helpers
+        bool loadFont(const std::string& l_id, const std::filesystem::path& l_path) {
+            return load<sf::Font>(l_id, l_path);
+        }
+        [[nodiscard]] sf::Font& getFont(const std::string& l_id) {
+            return get<sf::Font>(l_id);
+        }
+        [[nodiscard]] const sf::Font& getFont(const std::string& l_id) const {
+            return get<sf::Font>(l_id);
+        }
+        bool releaseFont(const std::string& l_id) {
+            return release<sf::Font>(l_id);
+        }
+
         void clear() {
             m_textures.clear();
             m_sounds.clear();
             m_images.clear();
+            m_fonts.clear();
         }
 
         [[nodiscard]] TextureCache& getTextures() { return m_textures; }
@@ -264,6 +286,9 @@ export namespace core {
         [[nodiscard]] ImageCache& getImages() { return m_images; }
         [[nodiscard]] const ImageCache& getImages() const { return m_images; }
 
+        [[nodiscard]] FontCache& getFonts() { return m_fonts; }
+        [[nodiscard]] const FontCache& getFonts() const { return m_fonts; }
+
     private:
         template<typename T>
         auto& getCache() {
@@ -273,6 +298,8 @@ export namespace core {
                 return m_sounds;
             } else if constexpr (std::is_same_v<T, sf::Image>) {
                 return m_images;
+            } else if constexpr (std::is_same_v<T, sf::Font>) {
+                return m_fonts;
             } else {
                 static_assert(!sizeof(T*), "Unsupported resource type in ResourceManager");
             }
@@ -286,6 +313,8 @@ export namespace core {
                 return m_sounds;
             } else if constexpr (std::is_same_v<T, sf::Image>) {
                 return m_images;
+            } else if constexpr (std::is_same_v<T, sf::Font>) {
+                return m_fonts;
             } else {
                 static_assert(!sizeof(T*), "Unsupported resource type in ResourceManager");
             }
@@ -294,6 +323,7 @@ export namespace core {
         TextureCache m_textures;
         SoundCache m_sounds;
         ImageCache m_images;
+        FontCache m_fonts;
     };
 
 } // namespace core

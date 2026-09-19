@@ -45,6 +45,7 @@ target_sources(engine
         src/core.cppm
         src/StateManager.cppm
         src/State.cppm
+        src/GUI.cppm
         src/MenuState.cppm
         src/GameState.cppm
         src/PauseState.cppm
@@ -64,3 +65,7 @@ enable_testing()
 add_executable(test_resource_manager tests/test_resource_manager.cpp)
 target_link_libraries(test_resource_manager PRIVATE engine)
 add_test(NAME test_resource_manager COMMAND test_resource_manager)
+
+add_executable(test_gui tests/test_gui.cpp)
+target_link_libraries(test_gui PRIVATE engine)
+add_test(NAME test_gui COMMAND test_gui)

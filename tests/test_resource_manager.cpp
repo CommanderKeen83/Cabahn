@@ -176,6 +176,31 @@ int main() {
         return 1;
     }
 
+    // Test 8: Font loading, reference count, and release
+    std::println("Test 8: Font loading and release...");
+    const std::filesystem::path fontPath = core::utils::getResourcePath("fonts/main.ttf");
+    if (!manager.loadFont("test_font", fontPath)) {
+        std::println(stderr, "Failed to load font from {}", fontPath.string());
+        return 1;
+    }
+    if (!manager.has<sf::Font>("test_font")) {
+        std::println(stderr, "Font 'test_font' should exist");
+        return 1;
+    }
+    if (manager.getRefCount<sf::Font>("test_font") != 1) {
+        std::println(stderr, "Font refCount should be 1");
+        return 1;
+    }
+    [[maybe_unused]] const sf::Font& fontRef = manager.getFont("test_font");
+    if (!manager.releaseFont("test_font")) {
+        std::println(stderr, "Failed to release font");
+        return 1;
+    }
+    if (manager.has<sf::Font>("test_font")) {
+        std::println(stderr, "Font should no longer exist after release");
+        return 1;
+    }
+
     // Clean up temporary files
     std::filesystem::remove(testImagePath);
     std::filesystem::remove(testSoundPath);

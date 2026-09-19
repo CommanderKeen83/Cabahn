@@ -1,6 +1,5 @@
-//
-// Created by sf on 9/17/26.
-//
+module;
+#include <SFML/Window/Event.hpp>
 
 export module core:State;
 
@@ -27,6 +26,8 @@ export namespace core {
         virtual void update(const float l_dt) = 0;
 
         virtual void draw() = 0;
+
+        virtual void handleEvent(const sf::Event& /*l_event*/) {}
 
     protected:
         StateManager* m_stateManager;

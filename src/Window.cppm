@@ -5,6 +5,7 @@ module;
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
+#include <SFML/Window/Mouse.hpp>
 
 export module core:Window;
 
@@ -80,6 +81,28 @@ export namespace core {
         std::optional<sf::Event> pollEvent() { return m_renderWindow.pollEvent(); }
         [[nodiscard]] sf::Vector2u getVirtualSize() const { return m_virtualSize; }
 
+        [[nodiscard]] sf::Vector2f mapPixelToVirtual(const sf::Vector2i& pixelPos) const {
+            const auto winSize = m_renderWindow.getSize();
+            const float scaleX = static_cast<float>(winSize.x) / static_cast<float>(m_virtualSize.x);
+            const float scaleY = static_cast<float>(winSize.y) / static_cast<float>(m_virtualSize.y);
+            const float scale = std::min(scaleX, scaleY);
+            if (scale <= 0.0f) {
+                return {0.f, 0.f};
+            }
+
+            const float posX = (static_cast<float>(winSize.x) - static_cast<float>(m_virtualSize.x) * scale) / 2.0f;
+            const float posY = (static_cast<float>(winSize.y) - static_cast<float>(m_virtualSize.y) * scale) / 2.0f;
+
+            return { (static_cast<float>(pixelPos.x) - posX) / scale,
+                     (static_cast<float>(pixelPos.y) - posY) / scale };
+        }
+
+        [[nodiscard]] sf::Vector2f getMouseVirtualPosition() const {
+            return mapPixelToVirtual(sf::Mouse::getPosition(m_renderWindow));
+        }
+        void close() {
+            m_isOpen = false;
+        }
     private:
         sf::RenderWindow m_renderWindow;
         sf::RenderTexture m_canvas;

@@ -1,7 +1,5 @@
-//
-// Created by sf on 9/17/26.
-//
-
+module;
+#include <SFML/Window/Event.hpp>
 
 export module core:StateManager;
 import :State;
@@ -43,6 +41,12 @@ export namespace core {
             m_stateFactory[l_type] = [this]() -> std::unique_ptr<State> {
                 return std::make_unique<T>(this, m_context);
             };
+        }
+
+        void handleEvent(const sf::Event& l_event) {
+            if (!m_states.empty()) {
+                m_states.back().second->handleEvent(l_event);
+            }
         }
 
         void update(const float l_dt) {
