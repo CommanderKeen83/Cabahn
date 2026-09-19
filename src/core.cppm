@@ -2,6 +2,7 @@ export module core;
 
 export import :Window;
 export import :EventManager;
+export import :ResourceManager;
 export import :SharedContext;
 export import :Application;
 export import :StateManager;

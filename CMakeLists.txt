@@ -25,20 +25,20 @@ set(CMAKE_CXX_MODULE_STD ON)
 
 set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 
-find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System)
+find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
-add_executable(app
-    src/main.cpp
+add_library(engine
     src/MenuState.cpp
     src/GameState.cpp
     src/PauseState.cpp
     src/OptionState.cpp
 )
-target_sources(app
+target_sources(engine
     PUBLIC
     FILE_SET CXX_MODULES FILES
         src/SharedContext.cppm
         src/EventManager.cppm
+        src/ResourceManager.cppm
         src/Window.cppm
         src/Application.cppm
         src/core.cppm
@@ -49,8 +49,17 @@ target_sources(app
         src/PauseState.cppm
         src/OptionState.cppm
 )
-target_link_libraries(app PRIVATE
+target_link_libraries(engine PUBLIC
     SFML::Graphics
     SFML::Window
     SFML::System
+    SFML::Audio
 )
+
+add_executable(app src/main.cpp)
+target_link_libraries(app PRIVATE engine)
+
+enable_testing()
+add_executable(test_resource_manager tests/test_resource_manager.cpp)
+target_link_libraries(test_resource_manager PRIVATE engine)
+add_test(NAME test_resource_manager COMMAND test_resource_manager)
