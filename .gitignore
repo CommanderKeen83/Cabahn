@@ -1,0 +1,9 @@
+build/
+bin/
+cmake-build-debug/
+cmake-build-release/
+CMakeFiles/
+CMakeCache.txt
+*.o
+*.a
+*.so

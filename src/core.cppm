@@ -1,0 +1,12 @@
+export module core;
+
+export import :Window;
+export import :EventManager;
+export import :SharedContext;
+export import :Application;
+export import :StateManager;
+export import :State;
+export import :MenuState;
+export import :GameState;
+export import :PauseState;
+export import :OptionState;
