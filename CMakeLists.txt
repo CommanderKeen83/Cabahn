@@ -36,6 +36,7 @@ add_library(engine
 target_sources(engine
     PUBLIC
     FILE_SET CXX_MODULES FILES
+        src/Utilities.cppm
         src/SharedContext.cppm
         src/EventManager.cppm
         src/ResourceManager.cppm

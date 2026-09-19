@@ -1,5 +1,6 @@
 export module core;
 
+export import :Utilities;
 export import :Window;
 export import :EventManager;
 export import :ResourceManager;
