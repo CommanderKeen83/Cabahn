@@ -11,7 +11,7 @@ import :SharedContext;
 export namespace core {
     class Application {
     public:
-        Application() : m_window(800, 600, "Dancer in the Dark"), m_stateManager(&m_context) {
+        Application() : m_window(800, 600, "Enemata v0.1"), m_stateManager(&m_context) {
             m_context.m_window = &m_window;
             m_context.m_eventmanager = m_window.getEventManager();
             m_stateManager.switchTo(StateType::Menu);
