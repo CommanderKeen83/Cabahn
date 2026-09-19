@@ -31,7 +31,7 @@ constexpr sf::Vector2f ButtonBoxSize{74.0f, 18.0f}; // Dimensions of clickable b
 constexpr unsigned int ButtonTextSize = 8;          // Font character size (8px is native for PublicPixel!)
 constexpr float ButtonStartX = 8.0f;
 constexpr float ButtonStartY = 25.0f;
-constexpr float ButtonSpacingY = 12.0f;
+constexpr float ButtonSpacingY = 0.0f;
 
 // Color palette: The selected button is Yellow, unselected buttons are Grey
 constexpr sf::Color ButtonNormalColor{180, 180, 180};
@@ -114,12 +114,12 @@ void MenuState::onCreate() {
                    ButtonTextSize);
 
   createMenuButton(font, "OPTIONS",
-                   {ButtonStartX, ButtonStartY + ButtonSpacingY},
+                   {ButtonStartX, ButtonStartY + ButtonBoxSize.y + ButtonSpacingY},
                    [this]() { m_stateManager->switchTo(StateType::Options); },
                    ButtonTextSize);
 
   createMenuButton(
-      font, "QUIT", {ButtonStartX, ButtonStartY + 2.0f * ButtonSpacingY},
+      font, "QUIT", {ButtonStartX,  ButtonStartY +  2.0f * (ButtonBoxSize.y + ButtonSpacingY) },
       [this]() { m_context->m_window->close(); },
       ButtonTextSize);
 
