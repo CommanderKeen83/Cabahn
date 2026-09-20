@@ -8,6 +8,7 @@ import :Window;
 import :StateManager;
 import :SharedContext;
 import :ResourceManager;
+import :AudioManager;
 
 export namespace core {
     class Application {
@@ -15,11 +16,13 @@ export namespace core {
         Application()
             : m_window(800, 600, "Enemata v0.1"),
               m_resourceManager(),
+              m_audioManager(),
               m_context(),
               m_stateManager(&m_context) {
             m_context.m_window = &m_window;
             m_context.m_eventmanager = m_window.getEventManager();
             m_context.m_resourceManager = &m_resourceManager;
+            m_context.m_audioManager = &m_audioManager;
             m_stateManager.switchTo(StateType::Menu);
         }
 
@@ -45,6 +48,7 @@ export namespace core {
 
         void update(const float l_dt) {
             m_stateManager.update(l_dt);
+            m_audioManager.update(l_dt);
         }
         void lateUpdate() {
             m_stateManager.processRequests();
@@ -59,6 +63,7 @@ export namespace core {
     private:
         Window m_window;
         ResourceManager m_resourceManager;
+        AudioManager m_audioManager;
         SharedContext m_context;
         StateManager m_stateManager;
     };

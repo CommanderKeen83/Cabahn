@@ -40,11 +40,16 @@ target_sources(engine
         src/SharedContext.cppm
         src/EventManager.cppm
         src/ResourceManager.cppm
+        src/AudioManager.cppm
         src/Window.cppm
         src/Application.cppm
         src/core.cppm
         src/StateManager.cppm
         src/State.cppm
+        src/gui/Element.cppm
+        src/gui/Label.cppm
+        src/gui/Button.cppm
+        src/gui/Container.cppm
         src/GUI.cppm
         src/MenuState.cppm
         src/GameState.cppm
@@ -69,3 +74,7 @@ add_test(NAME test_resource_manager COMMAND test_resource_manager)
 add_executable(test_gui tests/test_gui.cpp)
 target_link_libraries(test_gui PRIVATE engine)
 add_test(NAME test_gui COMMAND test_gui)
+
+add_executable(test_audio_manager tests/test_audio_manager.cpp)
+target_link_libraries(test_audio_manager PRIVATE engine)
+add_test(NAME test_audio_manager COMMAND test_audio_manager)

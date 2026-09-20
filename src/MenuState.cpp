@@ -12,6 +12,7 @@ import :SharedContext;
 import :Utilities;
 import :Window;
 import :GUI;
+import :AudioManager;
 
 namespace core {
 
@@ -19,11 +20,13 @@ namespace {
 // Resource identifiers
 constexpr std::string_view TextureId = "main_menu_texture";
 constexpr std::string_view FontId = "main_font";
+constexpr std::string_view MenuMusicTrackId = "menu_screen";
 
 // Asset paths (relative to resources/)
 constexpr std::string_view BackgroundImagePath = "graphics/main_menu.png";
 constexpr std::string_view PrimaryFontPath = "fonts/PublicPixel.ttf";
 constexpr std::string_view FallbackFontPath = "fonts/main.ttf";
+constexpr std::string_view MenuMusicPath = "music/menu_screen.wav";
 
 // Layout configuration (within the 320x180 virtual retro canvas)
 constexpr sf::Vector2f MenuContainerPosition{230.0f, 105.0f};
@@ -125,9 +128,24 @@ void MenuState::onCreate() {
 
   // Initially select the first item (PLAY is yellow, other options are grey)
   selectButton(0);
+
+  if (m_context && m_context->m_audioManager) {
+    const auto musicPath = utils::getResourcePath(MenuMusicPath);
+    if (!m_context->m_audioManager->hasTrack(std::string(MenuMusicTrackId))) {
+      m_context->m_audioManager->loadTrack(std::string(MenuMusicTrackId), musicPath);
+    }
+  }
 }
 
-void MenuState::onActivate() {}
+void MenuState::onActivate() {
+  if (m_context && m_context->m_audioManager) {
+    const auto musicPath = utils::getResourcePath(MenuMusicPath);
+    if (!m_context->m_audioManager->hasTrack(std::string(MenuMusicTrackId))) {
+      m_context->m_audioManager->loadTrack(std::string(MenuMusicTrackId), musicPath);
+    }
+    m_context->m_audioManager->play(std::string(MenuMusicTrackId), true);
+  }
+}
 
 void MenuState::onDeactivate() {}
 

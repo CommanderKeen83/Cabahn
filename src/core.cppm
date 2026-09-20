@@ -4,6 +4,7 @@ export import :Utilities;
 export import :Window;
 export import :EventManager;
 export import :ResourceManager;
+export import :AudioManager;
 export import :SharedContext;
 export import :Application;
 export import :StateManager;
