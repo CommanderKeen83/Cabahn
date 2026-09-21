@@ -6,6 +6,8 @@ module;
 #include <SFML/Graphics/Drawable.hpp>
 #include <SFML/Window/Event.hpp>
 #include <SFML/Window/Mouse.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <SFML/Window/WindowEnums.hpp>
 
 export module core:Window;
 
@@ -15,15 +17,32 @@ import std;
 export namespace core {
     class Window {
     public:
+        // Borderless fullscreen window matching desktop resolution
+        explicit Window(const std::string& title,
+                        const unsigned int virtualWidth = 320,
+                        const unsigned int virtualHeight = 180)
+            : Window(sf::VideoMode::getDesktopMode().size.x,
+                     sf::VideoMode::getDesktopMode().size.y,
+                     title,
+                     virtualWidth,
+                     virtualHeight,
+                     sf::Style::None) {
+        }
+
         Window(const unsigned int width, const unsigned int height,
                const std::string& title,
                const unsigned int virtualWidth = 320,
-               const unsigned int virtualHeight = 180)
-            : m_renderWindow(sf::VideoMode{{width, height}}, title),
+               const unsigned int virtualHeight = 180,
+               const std::uint32_t style = sf::Style::Default)
+            : m_title(title),
+              m_renderWindow(sf::VideoMode{{width, height}}, title, style, sf::State::Windowed),
               m_canvas(sf::Vector2u{virtualWidth, virtualHeight}),
               m_virtualSize(virtualWidth, virtualHeight),
               m_eventManager(),
               m_isOpen(true) {
+            if (style == sf::Style::None) {
+                m_renderWindow.setPosition({0, 0});
+            }
             // Nearest-neighbor scaling for retro pixel art
             m_canvas.setSmooth(false);
         }
@@ -114,6 +133,7 @@ export namespace core {
             return scale;
         }
 
+        std::string m_title;
         sf::RenderWindow m_renderWindow;
         sf::RenderTexture m_canvas;
         sf::Vector2u m_virtualSize;

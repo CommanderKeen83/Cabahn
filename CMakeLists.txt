@@ -28,11 +28,11 @@ set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -stdlib=libc++")
 find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
 add_library(engine
-    src/MenuState.cpp
-    src/GameIntroState.cpp
-    src/GameState.cpp
-    src/PauseState.cpp
-    src/OptionState.cpp
+    src/states/MenuState.cpp
+    src/states/GameIntroState.cpp
+    src/states/GameState.cpp
+    src/states/PauseState.cpp
+    src/states/OptionState.cpp
 )
 target_sources(engine
     PUBLIC
@@ -52,11 +52,11 @@ target_sources(engine
         src/gui/Button.cppm
         src/gui/Container.cppm
         src/GUI.cppm
-        src/MenuState.cppm
-        src/GameIntroState.cppm
-        src/GameState.cppm
-        src/PauseState.cppm
-        src/OptionState.cppm
+        src/states/MenuState.cppm
+        src/states/GameIntroState.cppm
+        src/states/GameState.cppm
+        src/states/PauseState.cppm
+        src/states/OptionState.cppm
 )
 target_link_libraries(engine PUBLIC
     SFML::Graphics

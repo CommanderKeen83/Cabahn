@@ -14,7 +14,7 @@ export namespace core {
     class Application {
     public:
         Application()
-            : m_window(800, 600, "Enemata v0.1"),
+            : m_window("Enemata v0.1"),
               m_resourceManager(),
               m_audioManager(),
               m_context(),
