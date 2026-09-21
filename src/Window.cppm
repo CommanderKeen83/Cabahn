@@ -54,6 +54,7 @@ export namespace core {
         // Finalize canvas and render scaled to real window with letterboxing
         void display() {
             m_canvas.display();
+            m_canvas.setSmooth(false);
 
             // Clear real window with black for letterbox/pillarbox borders
             m_renderWindow.clear(sf::Color::Black);
@@ -61,19 +62,20 @@ export namespace core {
             sf::Sprite canvasSprite(m_canvas.getTexture());
 
             const auto winSize = m_renderWindow.getSize();
-            const float scaleX = static_cast<float>(winSize.x) / static_cast<float>(m_virtualSize.x);
-            const float scaleY = static_cast<float>(winSize.y) / static_cast<float>(m_virtualSize.y);
-            const float scale = std::min(scaleX, scaleY);
+            const float scale = calculateScale(winSize);
 
             canvasSprite.setScale({scale, scale});
 
-            const float posX = (static_cast<float>(winSize.x) - static_cast<float>(m_virtualSize.x) * scale) / 2.0f;
-            const float posY = (static_cast<float>(winSize.y) - static_cast<float>(m_virtualSize.y) * scale) / 2.0f;
+            const float posX = std::round((static_cast<float>(winSize.x) - static_cast<float>(m_virtualSize.x) * scale) / 2.0f);
+            const float posY = std::round((static_cast<float>(winSize.y) - static_cast<float>(m_virtualSize.y) * scale) / 2.0f);
             canvasSprite.setPosition({posX, posY});
 
             m_renderWindow.draw(canvasSprite);
             m_renderWindow.display();
         }
+
+        void setIntegerScaling(bool enable) { m_integerScaling = enable; }
+        [[nodiscard]] bool isIntegerScaling() const { return m_integerScaling; }
 
         sf::RenderTarget& getCanvas() { return m_canvas; }
         sf::RenderWindow* getRenderWindow() { return &m_renderWindow; }
@@ -83,15 +85,13 @@ export namespace core {
 
         [[nodiscard]] sf::Vector2f mapPixelToVirtual(const sf::Vector2i& pixelPos) const {
             const auto winSize = m_renderWindow.getSize();
-            const float scaleX = static_cast<float>(winSize.x) / static_cast<float>(m_virtualSize.x);
-            const float scaleY = static_cast<float>(winSize.y) / static_cast<float>(m_virtualSize.y);
-            const float scale = std::min(scaleX, scaleY);
+            const float scale = calculateScale(winSize);
             if (scale <= 0.0f) {
                 return {0.f, 0.f};
             }
 
-            const float posX = (static_cast<float>(winSize.x) - static_cast<float>(m_virtualSize.x) * scale) / 2.0f;
-            const float posY = (static_cast<float>(winSize.y) - static_cast<float>(m_virtualSize.y) * scale) / 2.0f;
+            const float posX = std::round((static_cast<float>(winSize.x) - static_cast<float>(m_virtualSize.x) * scale) / 2.0f);
+            const float posY = std::round((static_cast<float>(winSize.y) - static_cast<float>(m_virtualSize.y) * scale) / 2.0f);
 
             return { (static_cast<float>(pixelPos.x) - posX) / scale,
                      (static_cast<float>(pixelPos.y) - posY) / scale };
@@ -104,10 +104,21 @@ export namespace core {
             m_isOpen = false;
         }
     private:
+        [[nodiscard]] float calculateScale(const sf::Vector2u& winSize) const {
+            const float scaleX = static_cast<float>(winSize.x) / static_cast<float>(m_virtualSize.x);
+            const float scaleY = static_cast<float>(winSize.y) / static_cast<float>(m_virtualSize.y);
+            float scale = std::min(scaleX, scaleY);
+            if (m_integerScaling) {
+                scale = std::max(1.0f, std::floor(scale));
+            }
+            return scale;
+        }
+
         sf::RenderWindow m_renderWindow;
         sf::RenderTexture m_canvas;
         sf::Vector2u m_virtualSize;
         EventManager m_eventManager;
         bool m_isOpen;
+        bool m_integerScaling{false};
     };
 } // namespace core

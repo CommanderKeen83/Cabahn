@@ -104,8 +104,8 @@ void MenuState::onCreate() {
     }
   }
   m_hasLoadedFont = true;
-  const auto &font = m_context->m_resourceManager->getFont(std::string(FontId));
-
+  const auto& font = m_context->m_resourceManager->getFont(std::string(FontId));
+  
   m_guiContainer.clear();
   m_buttons.clear();
   m_guiContainer.setPosition(MenuContainerPosition);
@@ -113,7 +113,7 @@ void MenuState::onCreate() {
   // Create menu buttons (all start with Grey text, and become Yellow when
   // selected)
   createMenuButton(font, "PLAY", {ButtonStartX, ButtonStartY},
-                   [this]() { m_stateManager->switchTo(StateType::Game); },
+                   [this]() { m_stateManager->switchTo(StateType::GameIntro); },
                    ButtonTextSize);
 
   createMenuButton(font, "OPTIONS",

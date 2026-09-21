@@ -112,13 +112,13 @@ export namespace core::gui {
             const auto bounds = m_text->getLocalBounds();
             switch (m_alignment) {
                 case Alignment::Left:
-                    m_text->setOrigin({bounds.position.x, bounds.position.y});
+                    m_text->setOrigin({std::round(bounds.position.x), std::round(bounds.position.y)});
                     break;
                 case Alignment::Center:
-                    m_text->setOrigin({bounds.position.x + bounds.size.x / 2.0f, bounds.position.y});
+                    m_text->setOrigin({std::round(bounds.position.x + bounds.size.x / 2.0f), std::round(bounds.position.y)});
                     break;
                 case Alignment::Right:
-                    m_text->setOrigin({bounds.position.x + bounds.size.x, bounds.position.y});
+                    m_text->setOrigin({std::round(bounds.position.x + bounds.size.x), std::round(bounds.position.y)});
                     break;
             }
         }

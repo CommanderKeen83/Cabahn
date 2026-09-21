@@ -59,10 +59,10 @@ export namespace core::gui {
         }
 
         void layoutVertical(float startX, float startY, float spacing) {
-            float currentY = startY;
+            float currentY = std::round(startY);
             for (auto &element: m_elements) {
-                element->setPosition({startX, currentY});
-                currentY += element->getLocalBounds().size.y + spacing;
+                element->setPosition({std::round(startX), std::round(currentY)});
+                currentY += std::round(element->getLocalBounds().size.y) + spacing;
             }
         }
 

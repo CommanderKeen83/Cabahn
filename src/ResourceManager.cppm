@@ -47,6 +47,10 @@ export namespace core {
                 return false;
             }
 
+            if constexpr (std::is_same_v<Resource, sf::Font>) {
+                res->setSmooth(false);
+            }
+
             m_resources[l_id] = ResourceEntry{
                 .resource = std::move(res),
                 .refCount = 1,

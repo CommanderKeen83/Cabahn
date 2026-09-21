@@ -11,6 +11,7 @@ export import :StateManager;
 export import :State;
 export import :GUI;
 export import :MenuState;
+export import :GameIntroState;
 export import :GameState;
 export import :PauseState;
 export import :OptionState;

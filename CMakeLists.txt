@@ -29,6 +29,7 @@ find_package(SFML 3 REQUIRED COMPONENTS Graphics Window System Audio)
 
 add_library(engine
     src/MenuState.cpp
+    src/GameIntroState.cpp
     src/GameState.cpp
     src/PauseState.cpp
     src/OptionState.cpp
@@ -52,6 +53,7 @@ target_sources(engine
         src/gui/Container.cppm
         src/GUI.cppm
         src/MenuState.cppm
+        src/GameIntroState.cppm
         src/GameState.cppm
         src/PauseState.cppm
         src/OptionState.cppm
@@ -78,3 +80,7 @@ add_test(NAME test_gui COMMAND test_gui)
 add_executable(test_audio_manager tests/test_audio_manager.cpp)
 target_link_libraries(test_audio_manager PRIVATE engine)
 add_test(NAME test_audio_manager COMMAND test_audio_manager)
+
+add_executable(test_game_intro_state tests/test_game_intro_state.cpp)
+target_link_libraries(test_game_intro_state PRIVATE engine)
+add_test(NAME test_game_intro_state COMMAND test_game_intro_state)

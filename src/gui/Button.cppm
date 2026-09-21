@@ -331,14 +331,14 @@ export namespace core::gui {
             }
             const sf::FloatRect textBounds = m_text->getLocalBounds();
             if (!m_backgroundEnabled) {
-                m_text->setOrigin({textBounds.position.x, textBounds.position.y});
+                m_text->setOrigin({std::round(textBounds.position.x), std::round(textBounds.position.y)});
                 m_text->setPosition({0.0f, 0.0f});
             } else {
                 m_text->setOrigin({
-                    textBounds.position.x + textBounds.size.x / 2.0f,
-                    textBounds.position.y + textBounds.size.y / 2.0f
+                    std::round(textBounds.position.x + textBounds.size.x / 2.0f),
+                    std::round(textBounds.position.y + textBounds.size.y / 2.0f)
                 });
-                m_text->setPosition({m_size.x / 2.0f, m_size.y / 2.0f});
+                m_text->setPosition({std::round(m_size.x / 2.0f), std::round(m_size.y / 2.0f)});
             }
         }
 

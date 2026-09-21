@@ -4,6 +4,7 @@ module;
 export module core:StateManager;
 import :State;
 import :MenuState;
+import :GameIntroState;
 import :GameState;
 import :PauseState;
 import :OptionState;
@@ -13,6 +14,7 @@ export namespace core {
     enum class StateType {
         Global = -1,
         Menu,
+        GameIntro,
         Game,
         Pause,
         Options,
@@ -27,6 +29,7 @@ export namespace core {
         StateManager(SharedContext* l_context)
             : m_context(l_context), m_stateFactory(), m_states(), m_toRemove() {
             registerState<MenuState>(StateType::Menu);
+            registerState<GameIntroState>(StateType::GameIntro);
             registerState<GameState>(StateType::Game);
             registerState<PauseState>(StateType::Pause);
             registerState<OptionState>(StateType::Options);

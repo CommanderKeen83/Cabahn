@@ -191,7 +191,11 @@ int main() {
         std::println(stderr, "Font refCount should be 1");
         return 1;
     }
-    [[maybe_unused]] const sf::Font& fontRef = manager.getFont("test_font");
+    const sf::Font& fontRef = manager.getFont("test_font");
+    if (fontRef.isSmooth()) {
+        std::println(stderr, "Font smoothing should be disabled by default");
+        return 1;
+    }
     if (!manager.releaseFont("test_font")) {
         std::println(stderr, "Failed to release font");
         return 1;
